@@ -9,11 +9,11 @@ int r;
 
 r = _islower('H');
 _putchar(r + '0');
-r = _isalpha('o');
+r = _islower('o');
 _putchar(r + '0');
-r = _isalpha(108);
+r = _islower(108);
 _putchar(r + '0');
-r = _isalpha(';');
+r = _islower(';');
 _putchar(r + '0');
 _putchar('\n');
 return (0);
