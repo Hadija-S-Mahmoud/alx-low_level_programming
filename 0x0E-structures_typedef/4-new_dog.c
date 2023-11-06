@@ -1,29 +1,29 @@
 #include <stdlib.h>
 #include "dog.h"
 /**
-* _strlen - returns length
+* _strlen - returns the length of a string
 * @s: string
-* Return: length
+* Return: the length
 */
 int _strlen(char *s)
 {
-int a;
-a = 0;
-while (s[a] != '\0')
+int h;
+h = 0;
+while (s[h] != '\0')
 {
-a++;
+h++;
 }
-return (a);
+return (h);
 }
 /**
-* *_strcpy - copies the string
-* @dest: pointer to the bufferr
+* *_strcpy - copies the string pointed to
+* @dest: pointer to the buffer in which we copy the string
 * @src: string to be copied
-* Return: pointer to dest
+* Return: the pointer to dest
 */
 char *_strcpy(char *dest, char *src)
 {
-int l, a;
+int l, i;
 l = 0;
 while (src[l] != '\0')
 {
@@ -33,15 +33,15 @@ for (a = 0; a < l; a++)
 {
 dest[a] = src[a];
 }
-dest[a] = '\0'
+dest[a] = '\0';
 return (dest);
 }
 /**
 * new_dog - function that creates a new dog
-* @name: char
-* @age: float
-* @owner: char
-* Return: NULL if function fails
+* @name: name
+* @age: age
+* @owner: owner
+* Return: pointer to the new dog
 */
 dog_t *new_dog(char *name, float age, char *owner)
 {
@@ -65,8 +65,8 @@ free(dog);
 free(dog->name);
 return (NULL);
 }
-strcpy(dog->name, name);
-strcpy(dog->owner, owner);
+_strcpy(dog->name, name);
+_strcpy(dog->owner, owner);
 dog->age = age;
 return (dog);
 }
