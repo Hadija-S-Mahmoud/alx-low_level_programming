@@ -23,7 +23,7 @@ return (h);
 */
 char *_strcpy(char *dest, char *src)
 {
-int l, i;
+int l, a;
 l = 0;
 while (src[l] != '\0')
 {
