@@ -25,8 +25,12 @@ exit(2);
 a = (char *)main;
 for (h = 0; h < b; h++)
 {
+if (h == b - 1)
+{
 printf("%02hhx\n", a[h]);
 break;
+}
+printf("%02hhx", a[h]);
 }
 return (0);
 }
