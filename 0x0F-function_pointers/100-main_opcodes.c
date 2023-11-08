@@ -9,7 +9,7 @@
 int main(int argc, char *argv[])
 {
 int b;
-h;
+int h;
 char *a;
 if (argc != 2)
 {
@@ -23,9 +23,9 @@ printf("Error\n");
 exit(2);
 }
 a = (char *)main;
-for (h = 0; h < bytes; h++)
+for (h = 0; h < b; h++)
 {
-if (h == bytes - 1)
+if (h == b - 1)
 {
 printf("%02hhx\n", a[h]);
 break;
