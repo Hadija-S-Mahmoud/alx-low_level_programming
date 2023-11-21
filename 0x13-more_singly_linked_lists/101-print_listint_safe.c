@@ -40,7 +40,7 @@ tortoise = tortoise->next;
 hare = (hare->next)->next;
 }
 return (0);
-} 
+}
 /**
 * print_listint_safe - function that prints a listint_t linked list
 * @head: pointer
