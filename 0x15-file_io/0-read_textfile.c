@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <fontl.h>
+#include <fcntl.h>
 #include <stdlib.h>
 /**
 * read_textfile - function that reads a text file and prints it

@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <fontl.h>
+#include <fcntl.h>
 #include <unistd.h>
 int _strlen(char *str);
 int _putchar(char c);
