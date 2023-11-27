@@ -1,50 +1,68 @@
-#include "main.h"
-#define MAXSIZE 1204
-#define SE STDERR_FILENO
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <fcntl.h>
+#include <unistd.h>
+void check_IO_stat(int stat, int fd, char *filename, char mode);
 /**
-* main - program that copies the content of a file to another file.
-* @arg: argument count
-* @argv: argument vector
-* Return: 0
-*/
-int main(int arg, char *argv[])
+ * main - function copies the content of one file to another
+ * @argc: argument count
+ * @argv: arguments passed
+ * Return: 1 on success, exit otherwise
+ */
+int main(int argc, char *argv[])
 {
-int input_file, output_file, input_stat, output_stat;
-char buff[MAXSIZE];
-mode_t mode;
-mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH;
-if (arg != 3)
-dprintf(SE, "Usage: cp file_from file_to\n"), exit(97);
-input_file = open(argv[1], O_RDONLY);
-if (input_file == -1)
-dprintf(SE, "Error: Can't read from file %s\n", argv[1]), exit(98);
-output_file = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, mode);
-if (output_file == -1)
-dprintf(SE, "Error: Can't write to %s\n", argv[2]), exit(99);
-do {
-input_stat = read(input_file, buff, MAXSIZE);
-if (input_file == -1)
+int src, dest, n_read = 1024, wrote, close_src, close_dest;
+unsigned int mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH;
+char buff[1024];
+if (argc != 3)
 {
-dprintf(SE, "Error: Can't read from file %s\n", argv[1]);
+dprintf(STDERR_FILENO, "%s", "Usage: cp file_from file_to\n");
+exit(97);
+}
+src = open(argv[1], O_RDONLY);
+check_IO_stat(src, -1, argv[1], 'O');
+dest = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC, mode);
+check_IO_stat(dest, -1, argv[2], 'W');
+while (n_read == 1024)
+{
+n_read = read(src, buff, sizeof(buff));
+if (n_read == -1)
+check_IO_stat(-1, -1, argv[1], 'O');
+wrote = write(dest, buff, n_read);
+if (wrote == -1)
+check_IO_stat(-1, -1, argv[2], 'W');
+}
+close_src = close(src);
+check_IO_stat(close_src, src, NULL, 'C');
+close_dest = close(dest);
+check_IO_stat(close_dest, dest, NULL, 'C');
+return (0);
+}
+/**
+ * check_IO_stat - funct checks if a file can be opened or closed
+ * @stat: file descriptor of the file to be opened
+ * @filename: name of the file
+ * @mode: closing or opening
+ * @fd: file descriptor
+ * Return: void
+ */
+void check_IO_stat(int stat, int fd, char *filename, char mode)
+{
+if (mode == 'C' && stat == -1)
+{
+dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd);
+exit(100);
+}
+else if (mode == 'O' && stat == -1)
+{
+dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", filename);
 exit(98);
 }
-if (input_stat > 0)
+else if (mode == 'W' && stat == -1)
 {
-output_stat = write(output_file, buff, (ssize_t) input_stat);
-if (output_stat == -1)
-{
-dprintf(SE, "Error: Can't write to %s\n", argv[2]);
+dprintf(STDERR_FILENO, "Error: Can't write to %s\n", filename);
 exit(99);
 }
-}
-} while (input_stat > 0);
-input_stat = close(input_file);
-if (input_stat == -1)
-dprintf(SE, "Error: Can't close fd %d\n", input_file), exit(100);
-if (input_stat == -1)
-dprintf(SE, "Error: Can't close fd %d\n", input_file), exit(100);
-output_stat = close(output_file);
-if (output_file == -1)
-dprintf(SE, "Error: Can't close fd %d\n", output_file), exit(100);
-return (0);
 }
