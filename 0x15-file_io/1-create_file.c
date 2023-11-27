@@ -10,18 +10,19 @@ int create_file(const char *filename, char *text_content)
 int file_h;
 int n;
 int rwr;
-if (!filename)
+if (filename == NULL)
 return (-1);
-file_h = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0600);
+file_h = open(filename, O_CREAT | O_WRONLY | O_TRUNC, S_IRUSR | S_IWUSR);
 if (file_h == -1)
 return (-1);
-if (!text_content)
-text_content = " ";
-for (n = 0; text_content[n]; n++)
+if (text_content)
+{
+for (n = 0; text_content[n] != '\0'; n++)
 ;
 rwr = write(file_h, text_content, n);
 if (rwr == -1)
 return (-1);
+}
 close(file_h);
 return (1);
 }
